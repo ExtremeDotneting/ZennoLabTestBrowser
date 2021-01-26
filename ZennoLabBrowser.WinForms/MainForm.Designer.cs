@@ -1,6 +1,6 @@
-﻿namespace ZennoLabBrowser.WinForms2
+﻿namespace ZennoLabBrowser.WinForms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabFormControl1 = new DevExpress.XtraBars.TabFormControl();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.tabFormDefaultManager1 = new DevExpress.XtraBars.TabFormDefaultManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -41,12 +44,20 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.tabFormPage1 = new DevExpress.XtraBars.TabFormPage();
             this.tabFormContentContainer1 = new DevExpress.XtraBars.TabFormContentContainer();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.SettingsButton = new DevExpress.XtraBars.BarButtonItem();
+            this.InfoButton = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormDefaultManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabFormControl1
             // 
+            this.tabFormControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barButtonItem1,
+            this.SettingsButton,
+            this.InfoButton});
             this.tabFormControl1.Location = new System.Drawing.Point(0, 0);
             this.tabFormControl1.Manager = this.tabFormDefaultManager1;
             this.tabFormControl1.Name = "tabFormControl1";
@@ -55,8 +66,19 @@
             this.tabFormControl1.Size = new System.Drawing.Size(744, 64);
             this.tabFormControl1.TabForm = this;
             this.tabFormControl1.TabIndex = 0;
+            this.tabFormControl1.TabRightItemLinks.Add(this.barButtonItem1);
             this.tabFormControl1.TabStop = false;
             this.tabFormControl1.OuterFormCreating += new DevExpress.XtraBars.OuterFormCreatingEventHandler(this.OnOuterFormCreating);
+            // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.ActAsDropDown = true;
+            this.barButtonItem1.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
+            this.barButtonItem1.Caption = "barButtonItem1";
+            this.barButtonItem1.DropDownControl = this.popupMenu1;
+            this.barButtonItem1.Id = 0;
+            this.barButtonItem1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.barButtonItem1.Name = "barButtonItem1";
             // 
             // tabFormDefaultManager1
             // 
@@ -66,6 +88,11 @@
             this.tabFormDefaultManager1.DockControls.Add(this.barDockControlRight);
             this.tabFormDefaultManager1.DockingEnabled = false;
             this.tabFormDefaultManager1.Form = this;
+            this.tabFormDefaultManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barButtonItem1,
+            this.SettingsButton,
+            this.InfoButton});
+            this.tabFormDefaultManager1.MaxItemId = 3;
             // 
             // barDockControlTop
             // 
@@ -113,7 +140,27 @@
             this.tabFormContentContainer1.Size = new System.Drawing.Size(744, 386);
             this.tabFormContentContainer1.TabIndex = 1;
             // 
-            // Form1
+            // popupMenu1
+            // 
+            this.popupMenu1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.SettingsButton),
+            new DevExpress.XtraBars.LinkPersistInfo(this.InfoButton)});
+            this.popupMenu1.Manager = this.tabFormDefaultManager1;
+            this.popupMenu1.Name = "popupMenu1";
+            // 
+            // SettingsButton
+            // 
+            this.SettingsButton.Caption = "Settings";
+            this.SettingsButton.Id = 1;
+            this.SettingsButton.Name = "SettingsButton";
+            // 
+            // InfoButton
+            // 
+            this.InfoButton.Caption = "Info";
+            this.InfoButton.Id = 2;
+            this.InfoButton.Name = "InfoButton";
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -124,11 +171,12 @@
             this.Controls.Add(this.barDockControlTop);
             this.Controls.Add(this.tabFormContentContainer1);
             this.Controls.Add(this.tabFormControl1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.TabFormControl = this.tabFormControl1;
             this.Text = "ZennoLab Darknet Browser";
             ((System.ComponentModel.ISupportInitialize)(this.tabFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormDefaultManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,7 +192,10 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.TabFormContentContainer tabFormContentContainer1;
         private DevExpress.XtraBars.TabFormPage tabFormPage1;
-
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.PopupMenu popupMenu1;
+        private DevExpress.XtraBars.BarButtonItem SettingsButton;
+        private DevExpress.XtraBars.BarButtonItem InfoButton;
     }
 }
 
