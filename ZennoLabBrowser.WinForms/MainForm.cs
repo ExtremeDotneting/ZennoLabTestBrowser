@@ -9,6 +9,8 @@ namespace ZennoLabBrowser.WinForms
 {
     public partial class MainForm : DevExpress.XtraBars.TabForm
     {
+        static int OpenFormCount = 1;
+
         CustomBrowserControl _currentBrowserControl;
 
         public MainForm()
@@ -28,7 +30,7 @@ namespace ZennoLabBrowser.WinForms
             InitPage(TabFormControl.Pages[0]);
             OnSelectPage(TabFormControl.Pages[0]);
 
-            
+
         }
 
         void InitPage(TabFormPage page)
@@ -41,14 +43,18 @@ namespace ZennoLabBrowser.WinForms
             browserCtrl.Dock = DockStyle.Fill;
             page.ContentContainer.Controls.Clear();
             page.ContentContainer.Controls.Add(browserCtrl);
+            page.Text = "Home page";
+            browserCtrl.PageTitleChanged += (xwv, title) =>
+            {
+                page.Text = string.IsNullOrWhiteSpace(title) ? "Page" : title;
+            };
         }
 
         void OnSelectPage(TabFormPage page)
         {
-            _currentBrowserControl = page.ContentContainer.Controls[0] as CustomBrowserControl;
-                GlobalObjects.CurrentStatusStripLabel = _currentBrowserControl?.CurrentToolStripStatusLabel;
+            _currentBrowserControl = page?.ContentContainer?.Controls[0] as CustomBrowserControl;
+            GlobalObjects.CurrentStatusStripLabel = _currentBrowserControl?.CurrentToolStripStatusLabel;
         }
-
 
         void OnOuterFormCreating(object sender, OuterFormCreatingEventArgs e)
         {
@@ -57,6 +63,11 @@ namespace ZennoLabBrowser.WinForms
             e.Form = form;
             OpenFormCount++;
         }
-        static int OpenFormCount = 1;
+
+        private void SettingsButton_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var settingsEditorForm=new SettingsEditorForm();
+            settingsEditorForm.ShowDialog();
+        }
     }
 }

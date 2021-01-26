@@ -83,8 +83,10 @@
     <Reference Include="DevExpress.XtraRichEdit.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraSpreadsheet.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -103,15 +105,25 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegexReplacerItem.cs" />
+    <Compile Include="Models\UrlRedirectItem.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BrowserRequestHandler.cs" />
+    <Compile Include="Services\HttpClientExt.cs" />
     <Compile Include="Services\StatusMessagesService.cs" />
     <Compile Include="UI\CustomBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\CustomBrowserControl.Designer.cs">
       <DependentUpon>CustomBrowserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SettingsEditorForm.Designer.cs">
+      <DependentUpon>SettingsEditorForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -130,6 +142,9 @@
     <EmbeddedResource Include="UI\CustomBrowserControl.resx">
       <DependentUpon>CustomBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\SettingsEditorForm.resx">
+      <DependentUpon>SettingsEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -144,6 +159,12 @@
   <ItemGroup>
     <PackageReference Include="CefSharp.WinForms">
       <Version>75.1.142</Version>
+    </PackageReference>
+    <PackageReference Include="IRO.Storage">
+      <Version>2.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="IRO.Storage.WithLiteDB">
+      <Version>2.2.7</Version>
     </PackageReference>
     <PackageReference Include="IRO.XWebView.CefSharp.WinForms">
       <Version>1.1.5</Version>

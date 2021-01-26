@@ -37,6 +37,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabFormControl1 = new DevExpress.XtraBars.TabFormControl();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.CurrentPopupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.SettingsButton = new DevExpress.XtraBars.BarButtonItem();
+            this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
+            this.InfoButton = new DevExpress.XtraBars.BarButtonItem();
             this.tabFormDefaultManager1 = new DevExpress.XtraBars.TabFormDefaultManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -44,12 +48,9 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.tabFormPage1 = new DevExpress.XtraBars.TabFormPage();
             this.tabFormContentContainer1 = new DevExpress.XtraBars.TabFormContentContainer();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.SettingsButton = new DevExpress.XtraBars.BarButtonItem();
-            this.InfoButton = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPopupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormDefaultManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabFormControl1
@@ -57,13 +58,14 @@
             this.tabFormControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
             this.SettingsButton,
-            this.InfoButton});
+            this.InfoButton,
+            this.barSubItem1});
             this.tabFormControl1.Location = new System.Drawing.Point(0, 0);
             this.tabFormControl1.Manager = this.tabFormDefaultManager1;
             this.tabFormControl1.Name = "tabFormControl1";
             this.tabFormControl1.Pages.Add(this.tabFormPage1);
             this.tabFormControl1.SelectedPage = this.tabFormPage1;
-            this.tabFormControl1.Size = new System.Drawing.Size(744, 64);
+            this.tabFormControl1.Size = new System.Drawing.Size(820, 64);
             this.tabFormControl1.TabForm = this;
             this.tabFormControl1.TabIndex = 0;
             this.tabFormControl1.TabRightItemLinks.Add(this.barButtonItem1);
@@ -75,10 +77,38 @@
             this.barButtonItem1.ActAsDropDown = true;
             this.barButtonItem1.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
             this.barButtonItem1.Caption = "barButtonItem1";
-            this.barButtonItem1.DropDownControl = this.popupMenu1;
+            this.barButtonItem1.DropDownControl = this.CurrentPopupMenu;
             this.barButtonItem1.Id = 0;
             this.barButtonItem1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
             this.barButtonItem1.Name = "barButtonItem1";
+            // 
+            // CurrentPopupMenu
+            // 
+            this.CurrentPopupMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.SettingsButton),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem1),
+            new DevExpress.XtraBars.LinkPersistInfo(this.InfoButton)});
+            this.CurrentPopupMenu.Manager = this.tabFormDefaultManager1;
+            this.CurrentPopupMenu.Name = "CurrentPopupMenu";
+            // 
+            // SettingsButton
+            // 
+            this.SettingsButton.Caption = "Settings";
+            this.SettingsButton.Id = 1;
+            this.SettingsButton.Name = "SettingsButton";
+            this.SettingsButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.SettingsButton_ItemClick);
+            // 
+            // barSubItem1
+            // 
+            this.barSubItem1.Caption = "Features";
+            this.barSubItem1.Id = 3;
+            this.barSubItem1.Name = "barSubItem1";
+            // 
+            // InfoButton
+            // 
+            this.InfoButton.Caption = "Info";
+            this.InfoButton.Id = 2;
+            this.InfoButton.Name = "InfoButton";
             // 
             // tabFormDefaultManager1
             // 
@@ -91,8 +121,9 @@
             this.tabFormDefaultManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
             this.SettingsButton,
-            this.InfoButton});
-            this.tabFormDefaultManager1.MaxItemId = 3;
+            this.InfoButton,
+            this.barSubItem1});
+            this.tabFormDefaultManager1.MaxItemId = 5;
             // 
             // barDockControlTop
             // 
@@ -100,15 +131,15 @@
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 64);
             this.barDockControlTop.Manager = null;
-            this.barDockControlTop.Size = new System.Drawing.Size(744, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(820, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 450);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 585);
             this.barDockControlBottom.Manager = null;
-            this.barDockControlBottom.Size = new System.Drawing.Size(744, 0);
+            this.barDockControlBottom.Size = new System.Drawing.Size(820, 0);
             // 
             // barDockControlLeft
             // 
@@ -116,15 +147,15 @@
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 64);
             this.barDockControlLeft.Manager = null;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 386);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 521);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(744, 64);
+            this.barDockControlRight.Location = new System.Drawing.Point(820, 64);
             this.barDockControlRight.Manager = null;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 386);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 521);
             // 
             // tabFormPage1
             // 
@@ -137,34 +168,14 @@
             this.tabFormContentContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabFormContentContainer1.Location = new System.Drawing.Point(0, 64);
             this.tabFormContentContainer1.Name = "tabFormContentContainer1";
-            this.tabFormContentContainer1.Size = new System.Drawing.Size(744, 386);
+            this.tabFormContentContainer1.Size = new System.Drawing.Size(820, 521);
             this.tabFormContentContainer1.TabIndex = 1;
-            // 
-            // popupMenu1
-            // 
-            this.popupMenu1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.SettingsButton),
-            new DevExpress.XtraBars.LinkPersistInfo(this.InfoButton)});
-            this.popupMenu1.Manager = this.tabFormDefaultManager1;
-            this.popupMenu1.Name = "popupMenu1";
-            // 
-            // SettingsButton
-            // 
-            this.SettingsButton.Caption = "Settings";
-            this.SettingsButton.Id = 1;
-            this.SettingsButton.Name = "SettingsButton";
-            // 
-            // InfoButton
-            // 
-            this.InfoButton.Caption = "Info";
-            this.InfoButton.Id = 2;
-            this.InfoButton.Name = "InfoButton";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 450);
+            this.ClientSize = new System.Drawing.Size(820, 585);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -175,8 +186,8 @@
             this.TabFormControl = this.tabFormControl1;
             this.Text = "ZennoLab Darknet Browser";
             ((System.ComponentModel.ISupportInitialize)(this.tabFormControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPopupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormDefaultManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,9 +204,10 @@
         private DevExpress.XtraBars.TabFormContentContainer tabFormContentContainer1;
         private DevExpress.XtraBars.TabFormPage tabFormPage1;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
-        private DevExpress.XtraBars.PopupMenu popupMenu1;
+        private DevExpress.XtraBars.PopupMenu CurrentPopupMenu;
         private DevExpress.XtraBars.BarButtonItem SettingsButton;
         private DevExpress.XtraBars.BarButtonItem InfoButton;
+        private DevExpress.XtraBars.BarSubItem barSubItem1;
     }
 }
 

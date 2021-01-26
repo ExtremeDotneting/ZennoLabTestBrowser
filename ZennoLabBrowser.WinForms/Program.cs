@@ -5,12 +5,16 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
+using IRO.Storage.DefaultStorages;
+using IRO.Storage.WithLiteDB;
 using IRO.XWebView.CefSharp.Utils;
 using IRO.XWebView.CefSharp.WinForms.Utils;
 using IRO.XWebView.Core.Utils;
+using ZennoLabBrowser.WinForms.Models;
 using ZennoLabBrowser.WinForms.Services;
 
 namespace ZennoLabBrowser.WinForms
@@ -34,8 +38,10 @@ namespace ZennoLabBrowser.WinForms
                 hiddenForm.Size = new Size(0, 0);
                 hiddenForm.ShowInTaskbar = false;
                 hiddenForm.FormBorderStyle = FormBorderStyle.None;
+
                 ApplicationStartup();
             };
+
             //In example we use invisible main form as synchronization context.
             //It's important for ThreadSync that main form must be available during all app lifetime.
             XWebViewThreadSync.Init(new WinFormsThreadSyncInvoker(hiddenForm));
@@ -49,6 +55,8 @@ namespace ZennoLabBrowser.WinForms
         [STAThread]
         static void ApplicationStartup()
         {
+            GlobalObjects.Storage = new LiteDatabaseStorage();
+            GlobalObjects.UserSettings = UserSettings.Load();
             StatusMessagesService.StartAutoClearThread();
             GlobalObjects.MainForm = new MainForm();
             GlobalObjects.MainForm.FormClosed += delegate

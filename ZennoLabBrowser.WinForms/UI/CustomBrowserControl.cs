@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using IRO.XWebView.CefSharp;
+using IRO.XWebView.Core;
 using ZennoLabBrowser.WinForms.Models;
 using ZennoLabBrowser.WinForms.Services;
 
@@ -9,10 +11,12 @@ namespace ZennoLabBrowser.WinForms.UI
     {
         public CefSharpXWebView XWV { get; }
 
+        public event Action<IXWebView, string> PageTitleChanged;
+
         public CustomBrowserControl()
         {
             InitializeComponent();
-            XWV = new CefSharpXWebView(CurrentXWebViewControl);
+            XWV = new CefSharpXWebView(CurrentXWebViewControl, new BrowserRequestHandler());
 
             //Register events.
             //-----
@@ -29,7 +33,7 @@ namespace ZennoLabBrowser.WinForms.UI
             {
                 StatusMessagesService.Write($"Go forward'.");
             };
-            XWV.LoadFinished += (s, e) =>
+            XWV.LoadFinished += async (s, e) =>
             {
                 XWV.ThreadSync.Invoke(() =>
                 {
@@ -43,6 +47,15 @@ namespace ZennoLabBrowser.WinForms.UI
                 else
                 {
                     StatusMessagesService.Write($"Loaded '{e.Url}'. ");
+                    try
+                    {
+                        var title = await XWV.ExJs<string>("return document.title;");
+                        PageTitleChanged?.Invoke(XWV, title);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
                 }
             };
             XWV.Disposing += delegate
@@ -51,7 +64,12 @@ namespace ZennoLabBrowser.WinForms.UI
             };
             //-----
 
-            XWV.LoadUrl(UserSettings.Inst.HomeUrl);
+            XWV.WaitInitialization().ContinueWith((t) =>
+            {
+                XWV.LoadUrl(GlobalObjects.UserSettings.HomeUrl);
+            });
+           
+
         }
 
         private void UndoButton_Click(object sender, EventArgs e)
