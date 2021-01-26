@@ -1,13 +1,13 @@
 ﻿namespace ZennoLabBrowser.WinForms.Models
 {
-    public class RegexReplacerItem
+    public class RequestReplacerItem
     {
         public string RequestUrlRegex { get; set; }
 
-        public string MediaTypeRegex { get; set; }
-
-        public string DataRegex { get; set; }
+        public string RequestDataRegex { get; set; }
 
         public string ReplaceString { get; set; }
+
+        public string MediaType { get; set; } = "text/html";
     }
 }

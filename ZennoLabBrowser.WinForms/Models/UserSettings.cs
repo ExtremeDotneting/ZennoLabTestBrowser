@@ -10,9 +10,9 @@ namespace ZennoLabBrowser.WinForms.Models
         public string UserAgent { get; set; } =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36";
 
-        public List<RegexReplacerItem> RequestBodyReplacing { get; set; } = new List<RegexReplacerItem>();
+        public List<RequestReplacerItem> RequestBodyReplacing { get; set; } = new List<RequestReplacerItem>();
 
-        public List<RegexReplacerItem> ResponseBodyReplacing { get; set; } = new List<RegexReplacerItem>();
+        public List<ResponseReplacerItem> ResponseBodyReplacing { get; set; } = new List<ResponseReplacerItem>();
 
         /// <summary>
         /// Url redirect settings.

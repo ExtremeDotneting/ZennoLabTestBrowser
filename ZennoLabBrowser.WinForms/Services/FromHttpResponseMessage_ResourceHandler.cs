@@ -8,32 +8,25 @@ namespace ZennoLabBrowser.WinForms.Services
     public class FromHttpResponseMessage_ResourceHandler : ResourceHandler
     {
         readonly HttpResponseMessage _response;
+        readonly string _content;
 
-        public FromHttpResponseMessage_ResourceHandler(HttpResponseMessage response)
+        public FromHttpResponseMessage_ResourceHandler(HttpResponseMessage response, string content)
         {
             _response = response;
+            _content = content;
         }
 
         public override CefReturnValue ProcessRequestAsync(IRequest request, ICallback callback)
         {
-            Task.Run(async () =>
+            MimeType = _response.Content.Headers.ContentType.MediaType;
+            Stream = GenerateStreamFromString(_content);
+            StatusCode = (int)_response.StatusCode;
+            foreach (var header in _response.Headers)
             {
-                var contentStr = await _response.Content.ReadAsStringAsync();
-                MimeType = _response.Content.Headers.ContentType.MediaType;
-                Stream = GenerateStreamFromString(contentStr);
-                StatusCode = (int)_response.StatusCode;
-                foreach (var header in _response.Headers)
-                {
-                    Headers[header.Key] = string.Join(", ", header.Value);
-                }
-
-                //var stream =await resp.Content.ReadAsStreamAsync();
-                //stream.Position = 0;
-
-                callback.Continue();
-            });
-
-            return CefReturnValue.ContinueAsync;
+                Headers[header.Key] = string.Join(", ", header.Value);
+            }
+            callback.Continue();
+            return CefReturnValue.Continue;
         }
 
         public static Stream GenerateStreamFromString(string s)
