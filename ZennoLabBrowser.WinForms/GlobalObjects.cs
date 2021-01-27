@@ -13,5 +13,6 @@ namespace ZennoLabBrowser.WinForms
         public static IKeyValueStorage Storage { get; set; }
 
         public static UserSettings UserSettings { get; set; }
+
     }
 }

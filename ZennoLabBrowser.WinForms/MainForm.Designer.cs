@@ -65,7 +65,7 @@
             this.tabFormControl1.Name = "tabFormControl1";
             this.tabFormControl1.Pages.Add(this.tabFormPage1);
             this.tabFormControl1.SelectedPage = this.tabFormPage1;
-            this.tabFormControl1.Size = new System.Drawing.Size(820, 64);
+            this.tabFormControl1.Size = new System.Drawing.Size(934, 64);
             this.tabFormControl1.TabForm = this;
             this.tabFormControl1.TabIndex = 0;
             this.tabFormControl1.TabRightItemLinks.Add(this.barButtonItem1);
@@ -86,7 +86,6 @@
             // 
             this.CurrentPopupMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.SettingsButton),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem1),
             new DevExpress.XtraBars.LinkPersistInfo(this.InfoButton)});
             this.CurrentPopupMenu.Manager = this.tabFormDefaultManager1;
             this.CurrentPopupMenu.Name = "CurrentPopupMenu";
@@ -109,6 +108,7 @@
             this.InfoButton.Caption = "Info";
             this.InfoButton.Id = 2;
             this.InfoButton.Name = "InfoButton";
+            this.InfoButton.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.InfoButton_ItemClick);
             // 
             // tabFormDefaultManager1
             // 
@@ -123,7 +123,7 @@
             this.SettingsButton,
             this.InfoButton,
             this.barSubItem1});
-            this.tabFormDefaultManager1.MaxItemId = 5;
+            this.tabFormDefaultManager1.MaxItemId = 7;
             // 
             // barDockControlTop
             // 
@@ -131,15 +131,15 @@
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 64);
             this.barDockControlTop.Manager = null;
-            this.barDockControlTop.Size = new System.Drawing.Size(820, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(934, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 585);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 644);
             this.barDockControlBottom.Manager = null;
-            this.barDockControlBottom.Size = new System.Drawing.Size(820, 0);
+            this.barDockControlBottom.Size = new System.Drawing.Size(934, 0);
             // 
             // barDockControlLeft
             // 
@@ -147,15 +147,15 @@
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 64);
             this.barDockControlLeft.Manager = null;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 521);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(820, 64);
+            this.barDockControlRight.Location = new System.Drawing.Point(934, 64);
             this.barDockControlRight.Manager = null;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 521);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
             // 
             // tabFormPage1
             // 
@@ -168,14 +168,14 @@
             this.tabFormContentContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabFormContentContainer1.Location = new System.Drawing.Point(0, 64);
             this.tabFormContentContainer1.Name = "tabFormContentContainer1";
-            this.tabFormContentContainer1.Size = new System.Drawing.Size(820, 521);
+            this.tabFormContentContainer1.Size = new System.Drawing.Size(934, 580);
             this.tabFormContentContainer1.TabIndex = 1;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 585);
+            this.ClientSize = new System.Drawing.Size(934, 644);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -185,6 +185,7 @@
             this.Name = "MainForm";
             this.TabFormControl = this.tabFormControl1;
             this.Text = "ZennoLab Darknet Browser";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.tabFormControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPopupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabFormDefaultManager1)).EndInit();

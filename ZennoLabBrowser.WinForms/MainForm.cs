@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraBars;
+using IRO.XWebView.Core;
+using ZennoLabBrowser.WinForms.Models;
 using ZennoLabBrowser.WinForms.UI;
 
 namespace ZennoLabBrowser.WinForms
@@ -18,7 +23,6 @@ namespace ZennoLabBrowser.WinForms
             InitializeComponent();
             var iconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/main.ico");
             IconOptions.Icon = new Icon(iconPath);
-
             TabFormControl.PageCreated += (s, e) =>
             {
                 InitPage(e.Page);
@@ -30,20 +34,34 @@ namespace ZennoLabBrowser.WinForms
             InitPage(TabFormControl.Pages[0]);
             OnSelectPage(TabFormControl.Pages[0]);
 
+            var state = AppSavedState.Load();
+            if (state.OpenPages?.Any() == true)
+            {
+                var defaultPage = TabFormControl.Pages[0];
+                foreach (var item in state.OpenPages)
+                {
+                    TabFormControl.AddNewPage();
+                    var page = TabFormControl.Pages.Last();
+                    page.Text = item.Title;
+                    var browser = GetBrowserControl(page);
+                    browser.XWV.WaitInitialization().ContinueWith(async (t) =>
+                    {
+                        await browser.XWV.WaitWhileNavigating();
+                        await browser.XWV.LoadUrl(item.Url);
+                    });
+                }
+                TabFormControl.ClosePage(defaultPage);
+            }
 
         }
 
         void InitPage(TabFormPage page)
         {
-            //var browser = new IRO.XWebView.CefSharp.WinForms.CefSharpXWebViewControl();
-            //page.ContentContainer.Controls.Clear();
-            //page.ContentContainer.Controls.Add(browser);
-            //browser.CurrentBrowser.Load("https://google.com");
+            page.Text = "Home page";
             var browserCtrl = new CustomBrowserControl();
-            browserCtrl.Dock = DockStyle.Fill;
             page.ContentContainer.Controls.Clear();
             page.ContentContainer.Controls.Add(browserCtrl);
-            page.Text = "Home page";
+
             browserCtrl.PageTitleChanged += (xwv, title) =>
             {
                 page.Text = string.IsNullOrWhiteSpace(title) ? "Page" : title;
@@ -52,7 +70,8 @@ namespace ZennoLabBrowser.WinForms
 
         void OnSelectPage(TabFormPage page)
         {
-            _currentBrowserControl = page?.ContentContainer?.Controls[0] as CustomBrowserControl;
+            _currentBrowserControl = GetBrowserControl(page);
+            _currentBrowserControl.Dock = DockStyle.Fill;
             GlobalObjects.CurrentStatusStripLabel = _currentBrowserControl?.CurrentToolStripStatusLabel;
         }
 
@@ -66,8 +85,43 @@ namespace ZennoLabBrowser.WinForms
 
         private void SettingsButton_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var settingsEditorForm=new SettingsEditorForm();
+            var settingsEditorForm = new SettingsEditorForm();
             settingsEditorForm.ShowDialog();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var pageUrls = new List<SavedPageInfo>();
+            var arr = TabFormControl.Pages.ToArray();
+            foreach (var page in arr)
+            {
+                var browser = GetBrowserControl(page);
+                if (browser == null)
+                {
+                    continue;
+                }
+
+                var newItem = new SavedPageInfo()
+                {
+                    Url = browser.XWV.Url,
+                    Title = page.Text
+                };
+                pageUrls.Add(newItem);
+            }
+            AppSavedState.Update((state) =>
+            {
+                state.OpenPages = pageUrls;
+            });
+        }
+
+        CustomBrowserControl GetBrowserControl(TabFormPage page)
+        {
+            return page?.ContentContainer?.Controls[0] as CustomBrowserControl;
+        }
+
+        private void InfoButton_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Process.Start("https://github.com/ExtremeDotneting/ZennoLabTestBrowser");
         }
     }
 }

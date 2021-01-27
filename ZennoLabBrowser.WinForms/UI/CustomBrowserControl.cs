@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using IRO.XWebView.CefSharp;
 using IRO.XWebView.Core;
 using ZennoLabBrowser.WinForms.Models;
@@ -9,6 +10,8 @@ namespace ZennoLabBrowser.WinForms.UI
 {
     public partial class CustomBrowserControl : DevExpress.XtraEditors.XtraUserControl
     {
+        readonly RequestsReplacerService _requestsReplacer = RequestsReplacerService.Inst;
+
         public CefSharpXWebView XWV { get; }
 
         public event Action<IXWebView, string> PageTitleChanged;
@@ -22,8 +25,15 @@ namespace ZennoLabBrowser.WinForms.UI
             //-----
             XWV.LoadStarted += (s, e) =>
             {
-                if (!e.Cancel)
+                if (_requestsReplacer.IsUrlRedirect(e.Url, out var redirectUrl))
+                {
+                    e.Cancel = true;
+                    XWV.LoadUrl(redirectUrl);
+                }
+                else
+                {
                     StatusMessagesService.Write($"Navigating to '{e.Url}'. ");
+                }
             };
             XWV.GoBackRequested += (s, e) =>
             {
@@ -50,7 +60,10 @@ namespace ZennoLabBrowser.WinForms.UI
                     try
                     {
                         var title = await XWV.ExJs<string>("return document.title;");
-                        PageTitleChanged?.Invoke(XWV, title);
+                        await XWV.ThreadSync.InvokeAsync(() =>
+                        {
+                            PageTitleChanged?.Invoke(XWV, title); 
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -91,6 +104,15 @@ namespace ZennoLabBrowser.WinForms.UI
         private void NavigateUrlButton_Click(object sender, EventArgs e)
         {
             XWV.LoadUrl(UrlTextEdit.Text);
+        }
+
+        private void UrlTextEdit_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                XWV.LoadUrl(UrlTextEdit.Text);
+                e.Handled = true;
+            }
         }
     }
 }

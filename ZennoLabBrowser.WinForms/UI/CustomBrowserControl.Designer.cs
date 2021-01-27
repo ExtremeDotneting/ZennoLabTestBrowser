@@ -111,6 +111,7 @@
             this.UrlTextEdit.Properties.AutoHeight = false;
             this.UrlTextEdit.Size = new System.Drawing.Size(675, 30);
             this.UrlTextEdit.TabIndex = 9;
+            this.UrlTextEdit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.UrlTextEdit_KeyUp);
             // 
             // RefreshButton
             // 

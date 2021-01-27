@@ -10,19 +10,37 @@ namespace ZennoLabBrowser.WinForms.Models
         public string UserAgent { get; set; } =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36";
 
-        public List<RequestReplacerItem> RequestBodyReplacing { get; set; } = new List<RequestReplacerItem>();
+        public List<RequestReplacerItem> RequestBodyReplacing { get; set; } = new List<RequestReplacerItem>()
+        {
+            new RequestReplacerItem()
+            {
+                RequestUrlRegex = @"(https:\/\/apitester\.com\/checks\/test.*)",
+                RequestDataRegex = @"(initialdata)",
+                ReplaceString = "replaceddata"
+            }
+        };
 
-        public List<ResponseReplacerItem> ResponseBodyReplacing { get; set; } = new List<ResponseReplacerItem>();
+        public List<ResponseReplacerItem> ResponseBodyReplacing { get; set; } = new List<ResponseReplacerItem>()
+        {
+            new ResponseReplacerItem()
+            {
+                RequestUrlRegex = @"(https:\/\/lessons\.zennolab\.com.*)",
+                ResponseDataRegex = @"(Windows)",
+                ReplaceString = "Linux"
+            }
+        };
 
         /// <summary>
         /// Url redirect settings.
         /// </summary>
-        public List<UrlRedirectItem> UrlRedirect { get; set; }
-
-        /// <summary>
-        /// JS executed when page loaded.
-        /// </summary>
-        public string JsToExecute { get; set; }
+        public List<UrlRedirectItem> UrlRedirect { get; set; } = new List<UrlRedirectItem>()
+        {
+            new UrlRedirectItem()
+            {
+                RequestUrlRegex = @"(https:\/\/help.zennolab.com\/upload\/zEVRmk.png.*)",
+                ReplaceUrl = "https://lessons.zennolab.com/ru/index"
+            }
+        };
 
         public static UserSettings Load()
         {

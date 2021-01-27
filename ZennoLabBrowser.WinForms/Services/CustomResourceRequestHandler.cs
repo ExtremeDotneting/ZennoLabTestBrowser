@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace ZennoLabBrowser.WinForms.Services
     public class CustomResourceRequestHandler : ResourceRequestHandler
     {
         readonly HttpClient _httpClient = new HttpClient();
+        readonly RequestsReplacerService _requestsReplacer = RequestsReplacerService.Inst;
 
         protected override CefReturnValue OnBeforeResourceLoad(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
         {
@@ -17,7 +19,7 @@ namespace ZennoLabBrowser.WinForms.Services
             {
                 var url = request.Url;
                 var requestStr = TryGetPostDataString(request);
-                if (IsRequestMustBeReplaced(url, requestStr, out var requestReplacedStr))
+                if (_requestsReplacer.IsRequestMustBeReplaced(url, requestStr, out var requestReplacedStr))
                 {
                     TrySetPostDataString(request, requestReplacedStr);
                 }
@@ -25,22 +27,33 @@ namespace ZennoLabBrowser.WinForms.Services
             return base.OnBeforeResourceLoad(chromiumWebBrowser, browser, frame, request, callback);
         }
 
-        protected override void OnResourceLoadComplete(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IResponse response, UrlRequestStatus status, long receivedContentLength)
-        {
-            base.OnResourceLoadComplete(chromiumWebBrowser, browser, frame, request, response, status, receivedContentLength);
-        }
-
         protected override IResourceHandler GetResourceHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request)
         {
             if (IsTextResourceType(request))
             {
                 var url = request.Url;
-                if (IsResponseCanBeReplaced(url))
+                if (_requestsReplacer.IsResponseCanBeReplaced(url))
                 {
                     var responseMessage = SendResourceRequest(request).Result;
-                    var responseContentStr = responseMessage.Content.ReadAsStringAsync().Result;
-                  
-                    if (IsResponseMustBeReplaced(url, responseContentStr, out var responseReplacedStr))
+
+                    var stream = responseMessage
+                        .Content
+                        .ReadAsStreamAsync()
+                        .Result;
+                    Encoding encoding = null;
+                    try
+                    {
+                        encoding = Encoding.GetEncoding(responseMessage.Content.Headers.ContentType.CharSet);
+                    }
+                    catch
+                    {
+                        encoding = Encoding.UTF8;
+                    }
+
+                    var reader = new StreamReader(stream, encoding);
+                    var responseContentStr = reader.ReadToEnd();
+
+                    if (_requestsReplacer.IsResponseMustBeReplaced(url, responseContentStr, out var responseReplacedStr))
                     {
                         responseContentStr = responseReplacedStr;
                         var requestHandler = new FromHttpResponseMessage_ResourceHandler(
@@ -49,7 +62,7 @@ namespace ZennoLabBrowser.WinForms.Services
                         );
                         return requestHandler;
                     }
-                
+
                 }
             }
             return base.GetResourceHandler(chromiumWebBrowser, browser, frame, request);
@@ -64,33 +77,7 @@ namespace ZennoLabBrowser.WinForms.Services
             return isTextResourceType;
         }
 
-        bool IsRequestMustBeReplaced(string url, string requestStr, out string requestReplacedStr)
-        {
-            requestReplacedStr = null;
 
-            if (requestStr != null && requestStr.Contains("aaaaaaa"))
-            {
-                requestReplacedStr = requestStr?.Replace("aaaaaaa", "BBBBBBBB");
-                return true;
-            }
-            return false;
-        }
-
-        bool IsResponseCanBeReplaced(string url)
-        {
-            return true;
-        }
-
-        bool IsResponseMustBeReplaced(string url, string responseStr, out string responseReplacedStr)
-        {
-            responseReplacedStr = null;
-            if (responseStr != null && responseStr.Contains("aaaaaaa"))
-            {
-                responseReplacedStr = responseStr?.Replace("aaaaaaa", "BBBBBBBB");
-                return true;
-            }
-            return false;
-        }
 
         async Task<HttpResponseMessage> SendResourceRequest(IRequest request)
         {
@@ -108,8 +95,9 @@ namespace ZennoLabBrowser.WinForms.Services
 
         string TryGetPostDataString(IRequest request)
         {
-            if (request.PostData == null || request.PostData.Elements.Count == 0)
+            if (request.PostData == null || request.PostData.Elements.Count == 0 || request.PostData.Elements[0].Bytes == null)
                 return null;
+
             var bytes = request.PostData.Elements[0].Bytes;
             var requestPostDataStr = Encoding.UTF8.GetString(bytes);
             return requestPostDataStr;
@@ -117,10 +105,9 @@ namespace ZennoLabBrowser.WinForms.Services
 
         void TrySetPostDataString(IRequest request, string requestPostDataStr)
         {
-            if (request.PostData == null || request.PostData.Elements.Count == 0)
+            if (request.PostData == null || request.PostData.Elements.Count == 0 || request.PostData.Elements[0].Bytes == null)
                 return;
             request.PostData.Elements[0].Bytes = Encoding.UTF8.GetBytes(requestPostDataStr);
         }
     }
-
 }

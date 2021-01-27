@@ -8,6 +8,5 @@
 
         public string ReplaceString { get; set; }
 
-        public string MediaType { get; set; } = "text/html";
     }
 }

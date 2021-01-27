@@ -2,7 +2,7 @@
 {
     public class UrlRedirectItem
     {
-        public string Regex { get; set; }
+        public string RequestUrlRegex { get; set; }
 
         /// <summary>
         /// If null - go to home page.

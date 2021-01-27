@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
+using DevExpress.XtraEditors;
 using IRO.Storage.DefaultStorages;
 using IRO.Storage.WithLiteDB;
 using IRO.XWebView.CefSharp.Utils;
@@ -32,14 +33,17 @@ namespace ZennoLabBrowser.WinForms
             AppDomain.CurrentDomain.AssemblyResolve += Resolver;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var hiddenForm= new Form();
+            var hiddenForm= new XtraForm();
             hiddenForm.Load += delegate
             {
                 hiddenForm.Size = new Size(0, 0);
                 hiddenForm.ShowInTaskbar = false;
                 hiddenForm.FormBorderStyle = FormBorderStyle.None;
 
-                ApplicationStartup();
+                XWebViewThreadSync.Inst.InvokeAsync(() =>
+                {
+                    ApplicationStartup(); 
+                });
             };
 
             //In example we use invisible main form as synchronization context.
@@ -76,6 +80,8 @@ namespace ZennoLabBrowser.WinForms
                 "CefSharp.BrowserSubprocess.exe"
             );
             CefHelpers.AddDefaultSettings(settings);
+            var userSettings = UserSettings.Load();
+            settings.UserAgent = userSettings.UserAgent;
             settings.RemoteDebuggingPort = 9222;
             Cef.Initialize(settings, false, browserProcessHandler: null);
         }

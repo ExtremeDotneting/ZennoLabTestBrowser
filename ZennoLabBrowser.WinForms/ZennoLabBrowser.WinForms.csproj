@@ -105,8 +105,10 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppSavedState.cs" />
     <Compile Include="Models\RequestReplacerItem.cs" />
     <Compile Include="Models\ResponseReplacerItem.cs" />
+    <Compile Include="Models\SavedPageInfo.cs" />
     <Compile Include="Models\UrlRedirectItem.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="Program.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Services\CustomResourceRequestHandler.cs" />
     <Compile Include="Services\FromHttpResponseMessage_ResourceHandler.cs" />
     <Compile Include="Services\HttpClientExt.cs" />
+    <Compile Include="Services\RequestsReplacerService.cs" />
     <Compile Include="Services\StatusMessagesService.cs" />
     <Compile Include="UI\CustomBrowserControl.cs">
       <SubType>UserControl</SubType>
