@@ -2,6 +2,8 @@
 
 Этот проект является реализацией тестового задания. Представляет из себя браузер на основе CefSharp и Windows Forms + DevExpress. 
 
+[Скачать для теста можно тут.](https://github.com/ExtremeDotneting/ZennoLabTestBrowser/releases/tag/Release1)
+
 ![](images/test.png)
 
 Что он умеет:
